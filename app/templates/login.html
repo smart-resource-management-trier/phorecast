@@ -1,0 +1,41 @@
+<!-- templates/login.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div class="col col-4 bg-secondary rounded p-3">
+      <h3 class="mb-3 text-light">Login</h3>
+      <!--{% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-warning" role="alert">
+        {{ messages[0] }}
+      </div>
+      {% endif %}
+      {% endwith %}-->
+      <form action="{{ url_for('auth.login') }}" method="POST">
+        <div class="mb-3">
+          <div class="control">
+            <input autofocus="" class="form-control" name="username" placeholder="Your Username"
+                   type="text">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="control">
+            <input class="form-control" name="password" placeholder="Your Password" type="password">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="checkbox">
+            <input type="checkbox">
+            Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-light">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

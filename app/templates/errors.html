@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col col-10 bg-light p-3 border border-secondary rounded">
+      <h2 class="text-center">Component Errors</h2>
+      <div class="container mt-3">
+        <table class="table table-bordered border-secondary table-striped table-hover">
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Time</th>
+            <th scope="col">Component type</th>
+            <th scope="col">Component name</th>
+            <th scope="col">Error Message</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for error in errors %}
+          <!-- Use Bootstrap's collapse functionality: -->
+          <tr class="accordion-item" style="cursor:pointer;" data-bs-toggle="collapse"
+              data-bs-target="#collapse{{ error.id }}" aria-expanded="false"
+              aria-controls="collapse{{ error.id }}">
+            <th scope="row">{{ error.id }}</th>
+            <td>{{ error.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            <td>{{ error.table_name }}</td>
+            <td>{{ error.name }}</td>
+            <td>{{ error.error_message }}</td>
+          </tr>
+          <tr class="collapse accordion-collapse" id="collapse{{ error.id }}"
+              aria-labelledby="heading{{ error.id }}" data-bs-parent="#accordionExample">
+            <td colspan="5">
+              <pre>{{ error.stack_trace }}</pre>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

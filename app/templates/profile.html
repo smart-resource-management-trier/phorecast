@@ -1,0 +1,80 @@
+<!-- templates/profile.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+  <h1 class="text-center p-3">
+    Welcome, {{ name }}!
+  </h1>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="row justify-content-center p-3">
+    <div class="col col-4 bg-secondary rounded p-3">
+      {% for message in messages %}
+      <div class="alert alert-warning" role="alert">
+        {{ message }}.
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <div class="row justify-content-center p-3">
+    <div class="col col-4 bg-secondary rounded p-3">
+      <form action="{{ url_for('auth.change_password') }}" method="POST">
+        <div class="mb-3">
+          <div class="control">
+            <input autofocus="" class="form-control" name="old_password"
+                   placeholder="Your Old Password"
+                   required="True"
+                   type="password">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="control">
+            <input class="form-control" name="new_password_1" placeholder="Your New Password"
+                   required="True"
+                   type="password">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="control">
+            <input class="form-control" name="new_password_2" placeholder="Repeat Your New Password"
+                   required="True"
+                   type="password">
+          </div>
+        </div>
+
+        <button class="btn btn-lg btn-light">Change Password</button>
+      </form>
+
+    </div>
+  </div>
+  <div class="row justify-content-center p-3">
+    <div class="col col-4 bg-secondary rounded p-3">
+      <form action="{{ url_for('auth.change_username') }}" method="POST">
+        <div class="mb-3">
+          <div class="control">
+            <input autofocus="" class="form-control" name="new_username"
+                   placeholder="Your New Username"
+                   required="True"
+                   type="text">
+          </div>
+        </div>
+
+
+        <button class="btn btn-lg btn-light">Change Username</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

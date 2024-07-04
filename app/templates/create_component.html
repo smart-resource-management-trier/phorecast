@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div class="col col-4 bg-light border border-secondary rounded p-3">
+      <h2> Configure a {{table_name}} :</h2>
+      <br/>
+      <form method="post" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+        {% for field in form if field.type != "CSRFTokenField" %}
+        {% set class_str = "form-control is-invalid" if field.errors else "form-control" %}
+        <div class="mb-3">
+          {{ field.label(class_="form-label") }}
+          {% if field.type == "TextAreaField" %}
+            {{ field(class_=class_str, rows=4) }}
+          {% else %}
+            {{ field(class_=class_str) }}
+          {% endif %}
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+              {{ error }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% endfor %}
+        <div>
+          <button class="btn btn-primary" name="submit" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

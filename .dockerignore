@@ -1,0 +1,11 @@
+venv
+.env
+Dockerfile
+README.md
+CONTRIBUTING.md
+.gitlab-ci.yml
+.gitignore
+.editorconfig
+compose.yml
+docu
+tests

@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: Prediction API
+  version: 0.0.0
+  description: API for retrieving latest predictions and available fields.
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /apiv0/prediction:
+    get:
+      summary: Get Latest Predictions
+      description: Retrieve the latest predictions for a specific field.
+      parameters:
+        - name: field
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The field for which to retrieve predictions.
+        - name: run_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The specific run ID to retrieve predictions for. If not provided, the latest predictions will be returned.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResponse'
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No field specified
+  /apiv0/fields:
+    get:
+      summary: Get Fields
+      description: Retrieve the list of available fields.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldsResponse'
+        '404':
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No fields found
+
+components:
+  schemas:
+    PredictionResponse:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The field for which predictions were retrieved.
+        run_id:
+          type: string
+          description: The run ID associated with the predictions.
+        forecast:
+          type: object
+          description: A dictionary containing the predicted values, where the keys are the timestamps and the values are the corresponding predicted values.
+          example:
+            "2023-07-03 09:00:00+00:00": 25.5
+            "2023-07-03 10:00:00+00:00": 26.2
+            "2023-07-03 11:00:00+00:00": 27.8
+          properties:
+            key:
+              type: string
+              format: date-time
+              description: The timestamp of the predicted value.
+            value:
+              type: number
+              description: The predicted value for the corresponding timestamp.
+    FieldsResponse:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: An array containing the field names.

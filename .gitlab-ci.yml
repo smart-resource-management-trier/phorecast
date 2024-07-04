@@ -1,0 +1,73 @@
+# TODO MH: Diese Datei müsste man dann übersetzen in eine entsprechende GitHub-Actions Datei.
+
+stages: # add tests back when image has ssh
+  - test
+  - build
+
+include:
+  # Refer to https://gitlab.rlp.net/wi2/devops/common for usage and documentation.
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - project: "wi2/devops/common"
+    file: "/ci-cd/py-flake8.yml"
+  - project: "wi2/devops/common"
+    file: "/ci-cd/py-lint.yml"
+  - project: "wi2/devops/common"
+    file: "/ci-cd/py-test-cov.yml"
+  - project: "wi2/devops/common"
+    file: "/ci-cd/includes/rules.yml"
+  - project: "wi2/devops/common"
+    file: "/ci-cd/includes/py-cache.yml"
+
+
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+  CI_PYTHON_VERSION: "3.12"
+
+
+
+py_test_cov:
+  variables:
+    # Instruct Testcontainers to use the daemon of DinD, use port 2375 for non-tls connections.
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    PYTHON_PIP_FILE_PATH: "tests/requirements-test.txt"
+  services:
+    - name: docker:dind
+      alias: "dind"
+      command: [ "--tls=false" ]
+  dependencies: []
+
+
+docker-build:
+  # Use the official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  # Default branch leaves tag empty (= latest tag)
+  # All other branches are tagged with the escaped branch name (commit ref slug)
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+      if [[ "$CI_COMMIT_TAG" != "" ]]; then
+        tag=":$CI_COMMIT_TAG"
+        echo "Running on tag '$CI_COMMIT_TAG': tag = $tag"
+      fi
+
+    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
+    - docker push "$CI_REGISTRY_IMAGE${tag}"
+  # Run this job in a branch where a Dockerfile exists
+  only:
+    - master
+    - development
+    - staging
+

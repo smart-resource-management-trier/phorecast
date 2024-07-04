@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title text-center">
+  Model Configuration
+</h1>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col col-8 bg-light p-3 border border-secondary rounded">
+      <h3>Runs for {{ model_name }}</h3>
+      <div class="container mt-3">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">Score</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for run in runs %}
+          <!-- Use Bootstrap's collapse functionality: -->
+          <tr class="accordion-item" style="cursor:pointer;" data-bs-toggle="collapse"
+              data-bs-target="#collapse{{ run.id }}" aria-expanded="false"
+              aria-controls="collapse{{ run.id }}">
+            <th scope="row">{{ run.id }}</th>
+            <td>{{ run.ts }}</td>
+            <td>{{ run.score }}</td>
+          </tr>
+          <tr class="collapse accordion-collapse" id="collapse{{ run.id }}"
+              aria-labelledby="heading{{ run.id }}" data-bs-parent="#accordionExample">
+            <td colspan="3">
+              <div class="card card-body">
+                {% for name, path in run.image_paths %}
+                <div class="d-flex flex-column align-items-center text-center mb-3">
+                  <img src="{{ path }}" loading="lazy" class="img-fluid img-thumbnail" style="max-height: 500px;"
+                       alt="Image related to run {{ run.id }}">
+                  <div class="fs-3 caption text-muted">{{ name }}</div>
+                </div>
+                {% endfor %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex mt-3 justify-content-center">
+        <a  class="btn btn-danger" href="{{ url_for('main.train_model', component_id=component_id) }}">Train {{model_name}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

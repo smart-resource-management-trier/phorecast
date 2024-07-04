@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br/>
+<h2 class="text-center"> {{ component_type }} Overview</h2>
+<br/>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col col-6 bg-light p-3 border border-secondary rounded">
+      <h3>Configured {{ component_type }}:</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered border-secondary">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Last Execution</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for component in active_components %}
+                    <tr>
+                        <td>{{ component.name }}</td>
+                        <td>{{ component.type }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if component.status == 'Active' else 'danger' }}">
+                                <i class="bi bi-circle-fill"></i>
+                                {{ component.status }}
+                            </span>
+                        </td>
+                        <td>{{ component.last_execution }}</td>
+                        <td>
+                            <a href="{{ url_for('main.update_object',component_type=component_type,table_name=component.type,component_id=component.id)}}" class="btn btn-primary btn-sm">Update</a>
+                            <a href="{{ url_for('main.delete_object',component_type=component_type,table_name=component.type,component_id=component.id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
+                            {% if component_type == 'models' %}
+                              <a href="{{ url_for('main.model_view',component_id=component.id)}}" class="btn btn-success btn-sm">View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      <h3>Create new {{ component_type }}:</h3>
+      <div class="mb-3">
+        <label for="componentSelect" class="form-label">Select Component to Create:</label>
+        <select class="form-select" id="componentSelect" onchange="redirectToCreate()">
+            <option selected>Choose...</option>
+            {% for component_name in creatable_components %}
+            <option value="{{ url_for('main.create_object',component_type=component_type,table_name=component_name) }}">{{ component_name }}</option>
+            {% endfor %}
+        </select>
+        <button id="redirectButton" class="btn btn-primary mt-2">Create</button>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script>
+    document.getElementById('redirectButton').addEventListener('click', function() {
+        var selectedUrl = document.getElementById('componentSelect').value;
+        if(selectedUrl) { // Check if a URL is selected
+            window.location.href = selectedUrl; // Redirect to the selected URL
+        } else {
+            alert('Please select a URL first.'); // Optionally alert the user to make a selection
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!-- templates/signup.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div class="col col-4 bg-secondary rounded p-3">
+
+      <h3 class="mb-3 text-light">Sign Up</h3>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-warning" role="alert">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('auth.signup') }}" method="POST">
+        <div class="mb-3">
+          <div class="control">
+            <input autofocus="" class="form-control" name="username" placeholder="Name" type="text">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="control">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+          </div>
+        </div>
+
+        <button class="btn btn-light btn-lg">Sign Up</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

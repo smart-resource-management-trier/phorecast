@@ -1,0 +1,47 @@
+parameter;description;range_lower;range_upper;Unit
+TTT; Temperature 2m above surface;250;310;K
+Td; Dewpoint 2m above surface;250;300;K
+DD; Wind direction;0;360;Deg
+FF; Wind speed;0;30;ms
+FX1; Maximum wind gust within the last hour;0;30;ms
+RR1c; Total precipitation during the last hour consistent with significant weather;0;20;mm
+RR1; Total precipitation during the last hour;0;20;mm
+RRS1c; Snow-Rain-Equivalent during the last hour;0;20;mm
+N; Total cloud cover;0;100;pct
+Neff; Effective cloud cover;0;100;pct
+N05; Cloud cover below 500 ft.;0;100;pct
+Nl; Low cloud cover (lower than 2 km);0;100;pct
+Nm; Midlevel cloud cover (2-7 km);0;100;pct
+Nh; High cloud cover (>7 km);0;100;pct
+PPPP; Surface pressure, reduced;96000;106000;Pa
+T5cm; Temperature 5cm above surface;220;340;K
+Rad1h; Global Irradiance;0;2000;Kj/m2
+VV; Visibility;0;100000;m
+SunD1; Sunshine duration during the last Hour;0;3600;s
+wwM; Probability for fog within the last hour;0;100;pct
+DRR1; Duration of precipitation within the last hour;0;3600;s
+wwZ; Probability: Occurrence of drizzle within the last hour;0;100;pct
+wwD; Probability: Occurrence of stratiform precipitation within the last hour;0;100;pct
+wwC; Probability: Occurrence of convective precipitation within the last hour;0;100;pct
+wwT; Probability: Occurrence of thunderstorms within the last hour;0;100;pct
+wwL; Probability: Occurrence of liquid precipitation within the last hour;0;100;pct
+wwS; Probability: Occurrence of solid precipitation within the last hour;0;100;pct
+wwF; Probability: Occurrence of freezing rain within the last hour;0;100;pct
+wwP; Probability: Occurrence of precipitation within the last hour;0;100;pct
+VV10; Probability: Visibility below 1000m;0;100;pct
+R101; Probability of precipitation > 0.1 mm during the last hour;0;100;pct
+R102; Probability of precipitation > 0.2 mm during the last hour;0;100;pct
+R103; Probability of precipitation > 0.3 mm during the last hour;0;100;pct
+R105; Probability of precipitation > 0.5 mm during the last hour;0;100;pct
+R107; Probability of precipitation > 0.7 mm during the last hour;0;100;pct
+R110; Probability of precipitation > 1.0 mm during the last hour;0;100;pct
+R120; Probability of precipitation > 2.0 mm during the last hour;0;100;pct
+RRad1; Global irradiance within the last hour;0;80;pct
+R130; Probability of precipitation > 3.0 mm during the last hour;0;100;pct
+R150; Probability of precipitation > 5.0 mm during the last hour;0;100;pct
+RR1o1; Probability of precipitation > 10 mm during the last hour;0;100;pct
+RR1w1; Probability of precipitation > 15 mm during the last hour;0;100;pct
+RR1u1; Probability of precipitation > 25 mm during the last hour;0;100;pct
+RRL1c; Total liquid precipitation during the last hour consistent with significant weather;0;20;mm
+Nlm; Cloud cover low and mid level clouds below 7000 m;0;100;pct
+H_BsC; Cloud base of convective clouds;0;5000;m

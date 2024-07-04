@@ -1,0 +1,4 @@
+parameter,description,range_lower,range_upper,Unit
+zenith,zenith angle,0,180,degree
+elevation,elevation angle,-90,90,degree
+azimuth,azimuth angle,0,360,degree

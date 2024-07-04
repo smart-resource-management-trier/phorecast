@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  influxdb:
+    image: influxdb:2.7.1
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2:rw
+    env_file:
+      - .env
+    ports:
+      - ${DOCKER_INFLUXDB_INIT_PORT}:8086
+  grafana:
+    image: grafana/grafana-oss:10.0.3
+    volumes:
+      - grafana-storage:/var/lib/grafana:rw
+    depends_on:
+      - influxdb
+    ports:
+      - ${GRAFANA_PORT}:3000
+  pipeline-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - influxdb
+    volumes:
+      - server-storage:/app/data:rw
+    ports:
+      - "80:80"
+
+
+volumes:
+  grafana-storage:
+  influxdb-storage:
+  server-storage:
