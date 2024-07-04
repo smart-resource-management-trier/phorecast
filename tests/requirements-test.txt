@@ -3,3 +3,5 @@ hypothesis==6.100.1
 testcontainers-core==0.0.1rc1
 pylint
 flake8
+pytest
+pytest-cov
