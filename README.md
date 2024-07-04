@@ -22,12 +22,12 @@ and data sources.
 <!-- TOC -->
 
 <h3>Important Links: </h3>
-<h4>Contributing Guidelines: [CONTRIBUTING.md](CONTRIBUTING.md) </h4>
-<h4>API Reference: [API Reference](docu/api/openapi.yaml)</h4>
-<h4>Tutorials for configuring and extending the Project: [Tutorials](docu/tutorials/Tutorials.md)</h4>
-<h4>License: [LICENSE](LICENSE)</h4>
-<h4>Compose Configuration (Production): There will be a deployment ready compose configuration with 
-reverse proxy and pre installed dashboard</h4>
+- Contributing Guidelines: [CONTRIBUTING.md](CONTRIBUTING.md) 
+- API Reference: [API Reference](docu/api/openapi.yaml)
+- Tutorials for configuring and extending the Project: [Tutorials](docu/tutorials/Tutorials.md)
+- License: [LICENSE](LICENSE)
+- Compose Configuration (Production): There will be a deployment ready compose configuration with 
+reverse proxy and pre installed dashboard
 
 
 ## Motivation
