@@ -287,8 +287,8 @@ class InfluxInterface:
 
         target_discriminator = ""
         if targets:
-            target_discriminator = ('|> filter(fn: (r) => r._field == "' +
-                                    '" or r._field == "'.join(targets) + '")')
+            target_discriminator = ('|> filter(fn: (r) => r._field == "'
+                                    + '" or r._field == "'.join(targets) + '")')
 
         query = f'''from(bucket: "pv-data")
             |> range(start: {u_start_time}, stop: {u_stop_time})

@@ -204,8 +204,8 @@ class BaseModel(Base, ComponentInterface):
         :return: bool
         """
         last_run = self.last_run
-        if (last_run is not None and last_run.ts_start > pd.Timestamp.utcnow().tz_localize(None) -
-                pd.Timedelta(days=7)):
+        if (last_run is not None and last_run.ts_start > pd.Timestamp.utcnow().tz_localize(None)
+                - pd.Timedelta(days=7)):
             logger.debug("Model was already trained in the last 7 days, skipping retraining")
             return False
 
