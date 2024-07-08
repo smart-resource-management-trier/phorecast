@@ -6,7 +6,17 @@ on:
       - main
 
 jobs:
+  call-lint:
+    uses: ./.github/workflows/lint.yml
+
+  call-test:
+    uses: ./.github/workflows/pytest.yml
+
   build-and-push:
+    needs:
+      - call-lint
+      - call-test
+
     runs-on: ubuntu-latest
     
     steps:
