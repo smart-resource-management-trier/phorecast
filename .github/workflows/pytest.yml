@@ -14,13 +14,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      dind:
+      docker:
         image: docker:dind
         options: --privileged
-        ports:
-          - 2375:2375
-    env:
-      DOCKER_HOST: tcp://dind:2375
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock:ro
 
     steps:
     - name: Checkout code
