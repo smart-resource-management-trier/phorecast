@@ -22,6 +22,7 @@ and data sources.
 <!-- TOC -->
 
 <h3>Important Links: </h3>
+
 - Contributing Guidelines: [CONTRIBUTING.md](CONTRIBUTING.md) 
 - API Reference: [API Reference](docu/api/openapi.yaml)
 - Tutorials for configuring and extending the Project: [Tutorials](docu/tutorials/Tutorials.md)
@@ -66,9 +67,9 @@ Contains the main application code, including the web application built with Fla
 - `main.py`: Contains the main routes and views for the web application.
 - `models.py`: Defines the data models used by the Flask application (only auth data).
 ### `data/`
-Stores data files required by the application. THis folder should contain all the data which is 
-non-static and should not be volatile. This is so that all the data can be backed up and persistent 
-docker volumes can be created easily.
+Stores data files required by the application. THis folder should contain all the data which is
+unique to the implementation should not be volatile. This is so that all the data can be backed 
+up and persistent docker volumes can be created easily.
 
 - `model-data/`: Contains data related to model training and predictions.
 - `server-data/`: Stores server-specific data files.
@@ -112,7 +113,7 @@ The system architecture of this project is designed to support the entire lifecy
 2. Processing, model training, and inference. 
 3. Evaluation and monitoring of the forecasting performance. (not yet implemented)
 
-(these 3 steps are implemented by 4 types components explained in detail later)
+(these 3 steps are implemented by 4 types of components explained in detail later)
 
 Some of the enabling technologies, components and paradigms used in this project include:
 
