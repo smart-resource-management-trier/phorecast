@@ -1,3 +1,5 @@
+[![Build Docker Image](https://github.com/smart-resource-management-trier/phorecast/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/smart-resource-management-trier/phorecast/actions/workflows/docker-image.yml)
+
 # PV-Forecast Server
 
 Welcome to the Phorecast project, a comprehensive framework designed to predict solar 
