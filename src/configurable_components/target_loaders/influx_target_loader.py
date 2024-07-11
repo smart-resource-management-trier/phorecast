@@ -125,7 +125,7 @@ class InfluxTargetLoader(TargetLoader):
                                '"_value")')
 
         query = "\n".join(query_array)
-        print(query)
+
         # query the data from the external InfluxDB
         try:
             data = self.query_api.query_data_frame(query, data_frame_index=["_time"], org=self.org)
