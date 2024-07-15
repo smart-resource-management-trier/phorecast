@@ -125,7 +125,7 @@ class InfluxTargetLoader(TargetLoader):
                                '"_value")')
 
         query = "\n".join(query_array)
-
+        print(query)
         # query the data from the external InfluxDB
         try:
             data = self.query_api.query_data_frame(query, data_frame_index=["_time"], org=self.org)
@@ -147,11 +147,18 @@ class InfluxTargetLoader(TargetLoader):
                 "The requested field is not in the data, make sure the table is pivoted"
                 " correctly, so that one column is the field name, also make sure the correct"
                 "field is retrieved!", self)
-
+        print(data)
         # Only keep the field that is needed
         data[self.fields[0].influx_field] = data[self.field_name]
         data = data[[self.fields[0].influx_field]]
         data.index = pd.to_datetime(data.index)
+
+        # remove rows with NaN values left by the pivot function
+        data.dropna(inplace=True)
+
+        # if the last timestep is incomplete, remove it
+        if data.index[-1].minute != 0 or data.index[-1].second != 0:
+            data = data[:-1]
 
         try:
             influx_interface.write_pv_data(data, self.id)
