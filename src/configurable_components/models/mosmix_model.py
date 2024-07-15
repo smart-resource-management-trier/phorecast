@@ -172,7 +172,9 @@ class DWDMosmixModelLSTM(BaseModel):
 
         missing_runs = self.missing_runs
         if not missing_runs:
-            return # nothing to predict
+            return
+
+        # nothing to predict
 
         best_run = self.get_best_run()
 

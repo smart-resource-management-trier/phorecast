@@ -34,8 +34,8 @@ class InfluxTargetLoaderForm(TargetLoaderForm):
                       validators=[validators.DataRequired()])
     query = TextAreaField(
         'Influx Query which returns the wanted data.'
-        'The time range can be left out since it will be replaced at runtime.<br/>'
-        'An appropriate aggregation function will be set if not defined.<br/>',
+        'The time range can be left out since it will be replaced at runtime.'
+        'An appropriate aggregation function will be set if not defined.',
         validators=[validators.DataRequired()])
 
     field_name = StringField(
