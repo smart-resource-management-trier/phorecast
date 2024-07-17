@@ -24,6 +24,8 @@ event_config_db_file = os.path.join(server_storage_path, "event_config.db")
 # -Directories
 static_data_root_path = os.path.join(project_root_path, "resources")
 
+docker_build_path = os.path.join(static_data_root_path, "build", "docker")
+
 # -Files
 dwd_mosmix_parameters_file = os.path.join(static_data_root_path, "dwd_mosmix_parameters.csv")
 
