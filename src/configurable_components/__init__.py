@@ -9,20 +9,16 @@ from src.configurable_components.target_loaders.base_target_loader import Target
     DummyTargetLoader
 
 from src.configurable_components.target_loaders.influx_target_loader import InfluxTargetLoader
-from src.configurable_components.target_loaders.uc_mail_loader import UCmailLoader
 from src.configurable_components.weather_loaders.base_weather_loader import WeatherLoader, \
     DummyWeatherLoader
 from src.configurable_components.weather_loaders.dwd_mosmix_loader import DWDMosmixLoader
 from src.utils.general import Base
 
 target_loaders = {
-    UCmailLoader.__tablename__: UCmailLoader,
-    InfluxTargetLoader.__tablename__: InfluxTargetLoader,
-    DummyTargetLoader.__tablename__: DummyTargetLoader
+    InfluxTargetLoader.__tablename__: InfluxTargetLoader
 }
 
 weather_loaders = {
-    DummyWeatherLoader.__tablename__: DummyWeatherLoader,
     DWDMosmixLoader.__tablename__: DWDMosmixLoader
 }
 

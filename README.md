@@ -58,6 +58,19 @@ docker-compose build #builds the image from the Dockerfile
 ```bash
 docker-compose up #deploys the image in a docker-compose configuration
 ```
+
+## Quick start (Production like environment)
+1. Install docker and docker-compose on your machine. Then run the following commands in the root
+\
+--> [Docker docs Install Guide](https://docs.docker.com/engine/install/)
+2. run the create_config.py script in the root directory to create a new config, with a reverse 
+proxy and a preinstalled grafana dashboard.
+3. navigate to the directory where the config was created and run the following command:
+```bash
+docker-compose up -d 
+```
+
+(use -h to see all configuration options)
 ## Project Structure
 
 ### `app/`
