@@ -6,16 +6,17 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.configurable_components import Base, DummyTargetLoader
+from src.configurable_components import Base
 from src.configurable_components.target_loaders.base_target_loader import DummyTargetLoaderForm, \
-    TargetLoader
+    TargetLoader, DummyTargetLoader
 from src.engine.event_engine import EventEngine
-
+from src.configurable_components import target_loaders
 
 class TestEventEngine(unittest.TestCase):
     DB_PATH = 'test.db'
 
     def setUp(self):
+        target_loaders['dummy_target_loader'] = DummyTargetLoader
         try:
             os.remove(self.DB_PATH)
         except Exception:
