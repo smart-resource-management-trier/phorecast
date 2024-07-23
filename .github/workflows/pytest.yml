@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+  workflow_call:
+
 
 jobs:
   test:
@@ -14,7 +16,7 @@ jobs:
     services:
       docker:
         image: docker:dind
-        options: --privileged --shm-size=2g
+        options: --privileged
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -35,7 +37,7 @@ jobs:
         pytest --cov=src --cov-branch --cov-report=xml --cov-report=html
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: htmlcov/

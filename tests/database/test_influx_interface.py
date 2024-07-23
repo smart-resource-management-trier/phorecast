@@ -21,7 +21,7 @@ influx_envs = {
     "DOCKER_INFLUXDB_INIT_ORG": "pv-data",
     "DOCKER_INFLUXDB_INIT_BUCKET": "pv-data",
     "DOCKER_INFLUXDB_INIT_PORT": 8086,
-    "DOCKER_INFLUXDB_INIT_HOST": "dind" if os.environ.get("CI") else "localhost",
+    "DOCKER_INFLUXDB_INIT_HOST": "localhost",
 }
 
 
@@ -32,7 +32,7 @@ def create_test_env():
     for key, value in influx_envs.items():
         container.with_env(key, value)
         os.environ[key] = str(value)
-    # container.with_name("influxdb_test")
+    container.with_name("influxdb_test")
     container.start()
     wait_for_logs(container, "lvl=info msg=Listening")
     time.sleep(1)

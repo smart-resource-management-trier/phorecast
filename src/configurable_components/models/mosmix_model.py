@@ -171,6 +171,11 @@ class DWDMosmixModelLSTM(BaseModel):
             return
 
         missing_runs = self.missing_runs
+        if not missing_runs:
+            return
+
+        # nothing to predict
+
         best_run = self.get_best_run()
 
         logger.info(f"Loading model from run {best_run.id} with loss {best_run.loss}")

@@ -26,7 +26,7 @@ class InfluxTargetLoaderForm(TargetLoaderForm):
     InfluxTargetLoader.
     """
 
-    influx_url = StringField('Influx URL (without http/https)',
+    influx_url = StringField('Influx URL',
                              validators=[validators.DataRequired()])
     token = PasswordField('Token for InfluxDB access (only read access needed)',
                           validators=[validators.DataRequired()])
@@ -34,8 +34,8 @@ class InfluxTargetLoaderForm(TargetLoaderForm):
                       validators=[validators.DataRequired()])
     query = TextAreaField(
         'Influx Query which returns the wanted data.'
-        'The time range can be left out since it will be replaced at runtime.\n '
-        'An appropriate aggregation function will be set if not defined.\n',
+        'The time range can be left out since it will be replaced at runtime.'
+        'An appropriate aggregation function will be set if not defined.',
         validators=[validators.DataRequired()])
 
     field_name = StringField(
@@ -99,6 +99,8 @@ class InfluxTargetLoader(TargetLoader):
 
         if ts is None:
             ts = "-3y"
+        else:
+            ts = int(ts.timestamp())
 
         query_array = self.query.split("\n")
 
@@ -123,6 +125,7 @@ class InfluxTargetLoader(TargetLoader):
                                '"_value")')
 
         query = "\n".join(query_array)
+        print(query)
         # query the data from the external InfluxDB
         try:
             data = self.query_api.query_data_frame(query, data_frame_index=["_time"], org=self.org)
@@ -136,18 +139,26 @@ class InfluxTargetLoader(TargetLoader):
                 "Multiple tables found for the given query, should be only one!", self)
 
         if len(data) == 0:
-            raise ComponentError("No data returned from the query", self)
+            logger.info("No data returned from the query, nothing will be written")
+            return
 
         if self.field_name not in data.columns:
             raise ComponentError(
                 "The requested field is not in the data, make sure the table is pivoted"
                 " correctly, so that one column is the field name, also make sure the correct"
                 "field is retrieved!", self)
-
+        print(data)
         # Only keep the field that is needed
         data[self.fields[0].influx_field] = data[self.field_name]
         data = data[[self.fields[0].influx_field]]
         data.index = pd.to_datetime(data.index)
+
+        # remove rows with NaN values left by the pivot function
+        data.dropna(inplace=True)
+
+        # if the last timestep is incomplete, remove it
+        if data.index[-1].minute != 0 or data.index[-1].second != 0:
+            data = data[:-1]
 
         try:
             influx_interface.write_pv_data(data, self.id)
