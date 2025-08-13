@@ -22,7 +22,7 @@ affiliations:
     index: 1
   - name: Artificial Intelligence and Intelligent Information Systems, Trier University, 54296 Trier, Germany
     index: 2
-date: 14 August 2025
+date: 08 August 2025
 bibliography: references.bib
 ---
 
@@ -44,7 +44,7 @@ Recent years have seen increasing adoption of **deep learning** techniques such 
 Despite the availability of general-purpose time series libraries and proprietary forecasting platforms, there is still a clear gap for an **open, domain-specific, and reproducible** solution. Existing tools often lack native support for PV-specific data formats, comprehensive preprocessing pipelines, and deployment-ready architectures that align with Machine Learning Operations (MLOps) best practices. **PHORECAST** addresses this gap by providing a modular, open-source framework tailored to PV forecasting, integrating state-of-the-art machine learning models, automated training and evaluation pipelines, and containerized deployment. It enables both researchers and practitioners to move efficiently from experimental development to production-grade forecasting in real-world energy environments.
 
 # System Architecture
-PHORECAST is built as a modular and extensible framework, strongly aligned with Machine Learning Operations (MLOps) best practices [@Kreuzberger_2023], that implements a complete, reusable pipeline for photovoltaic (PV) power forecasting. The system is organized into four core subsystems:
+PHORECAST is built as a modular and extensible framework, strongly aligned with Machine Learning Operations (MLOps) best practices [@Kreuzberger_2023], that implements a complete, reusable pipeline for photovoltaic (PV) power forecasting. The system is organized into four core subsystems (Figure 1):
 
 **Data Loaders** handle ingestion from heterogeneous sources such as inverter telemetry, meteorological services, and file-based inputs (CSV, JSON). Loader modules harmonize formats, normalize timestamps, and standardize measurement units, enabling seamless integration of real-world datasets from diverse installations.
 
@@ -53,6 +53,8 @@ PHORECAST is built as a modular and extensible framework, strongly aligned with 
 **Model Layer** provides implementations of advanced forecasting models, including Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU) networks, optimized for time series data. It also supports classical algorithms such as Support Vector Regression (SVR). New models can be added via a plugin interface, provided they implement the defined API.
 
 **Evaluation Module** computes standard regression metrics (RMSE, MAE, MAPE), logs results, and supports export for visualization or further analysis. This enables objective comparison of model variants and configurations.
+
+![Overview of the Phorecast system architecture showing the four core subsystems: Data Loaders, Preprocessing Layer, Model Layer, and Evaluation Module.](figures/Forecast_Pipeline.png){#fig-pipeline}
 
 ## Design Philosophy and Deployment
 
