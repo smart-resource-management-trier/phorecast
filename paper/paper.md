@@ -54,7 +54,7 @@ PHORECAST is built as a modular and extensible framework, strongly aligned with 
 
 **Evaluation Module** computes standard regression metrics (RMSE, MAE, MAPE), logs results, and supports export for visualization or further analysis. This enables objective comparison of model variants and configurations.
 
-![Overview of the Phorecast system architecture showing the four core subsystems: Data Loaders, Preprocessing Layer, Model Layer, and Evaluation Module.](figures/Forecast_Pipeline.png){#fig-pipeline}
+![Overview of the Phorecast system architecture showing the four core subsystems: Data Loaders, Preprocessing Layer, Model Layer, and Evaluation Module.](Forecast_Pipeline.png){#fig-pipeline}
 
 ## Design Philosophy and Deployment
 
