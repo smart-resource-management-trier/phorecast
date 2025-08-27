@@ -5,19 +5,24 @@ This module contains all components which are configurable, and saved in the dat
 from src.configurable_components.adapter import engine
 from src.configurable_components.models.base_model import BaseModel
 from src.configurable_components.models.mosmix_model import DWDMosmixModelLSTM
-from src.configurable_components.target_loaders.base_target_loader import TargetLoader
 
+from src.configurable_components.target_loaders.base_target_loader import TargetLoader
+from src.configurable_components.target_loaders.base_target_loader import DummyTargetLoader
 from src.configurable_components.target_loaders.influx_target_loader import InfluxTargetLoader
+
 from src.configurable_components.weather_loaders.base_weather_loader import WeatherLoader
+from src.configurable_components.weather_loaders.base_weather_loader import DummyWeatherLoader
 from src.configurable_components.weather_loaders.dwd_mosmix_loader import DWDMosmixLoader
 from src.utils.general import Base
 
 target_loaders = {
-    InfluxTargetLoader.__tablename__: InfluxTargetLoader
+    InfluxTargetLoader.__tablename__: InfluxTargetLoader,
+    DummyTargetLoader.__tablename__: DummyTargetLoader
 }
 
 weather_loaders = {
-    DWDMosmixLoader.__tablename__: DWDMosmixLoader
+    DWDMosmixLoader.__tablename__: DWDMosmixLoader,
+    DummyWeatherLoader.__tablename__: DummyWeatherLoader
 }
 
 models = {
