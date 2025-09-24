@@ -119,4 +119,4 @@ class DWDMosmixLoader(WeatherLoader):
         lon = form.lon.data
         station_id = get_station_id(lat, lon)
         cell = Cell(member=0, lat1=lat, lon1=lon, lat2=lat, lon2=lon)
-        return cls(name=form.name.data, lat=lat, lon=lon, station_id=station_id, cells=[cell])
+        return cls(name=form.name.data, lat=lat, lon=lon, height=form.height.data, station_id=station_id, cells=[cell])

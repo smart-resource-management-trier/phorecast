@@ -158,7 +158,7 @@ class DWDMosmixModelLSTM(BaseModel):
         # plot 3 test predictions
         test_predictions = model.predict(test_ds, verbose=0)
         for _ in range(3):
-            index = random.randint(0, len(test_ds_np[0]))
+            index = random.randint(0, len(test_ds_np[0])-1)
             df = pd.DataFrame({'label': test_ds_np[1][index].reshape(-1),
                                'prediction': test_predictions[index].reshape(-1),
                                'reference': [x[15] for x in test_ds_np[0][index]]},
