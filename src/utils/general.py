@@ -5,6 +5,8 @@ This module contains general utility functions that are used across the project.
 import base64
 from io import BytesIO
 
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns

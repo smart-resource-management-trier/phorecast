@@ -90,6 +90,10 @@ class InfluxInterfaceTest(InfluxInterFaceTestBase):
 
     def test_read_and_write_pv(self):
         loader_id = 42
+
+        with self.assertRaises(ValueError):
+            self.interface.get_pv_data()
+
         self.interface.write_pv_data(self.pv_data_backup, loader_id=loader_id)
 
         correct_read = self.interface.get_pv_data(targets=["power"], loader_id=loader_id)
@@ -105,9 +109,6 @@ class InfluxInterfaceTest(InfluxInterFaceTestBase):
         correct_read_only_field_name = self.interface.get_pv_data(targets=["power"])
 
         pd.testing.assert_frame_equal(self.pv_data_backup, correct_read_only_field_name)
-
-        with self.assertRaises(ValueError):
-            self.interface.get_pv_data()
 
         with self.assertRaises(ValueError):
             self.interface.get_pv_data(targets=["wrong_target"])
