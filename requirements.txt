@@ -7,6 +7,7 @@ keras-tuner~=1.4.7
 keras~=3.2.1
 lxml~=5.2.1
 pvlib~=0.10.4
+pandas>=2.2,<3
 pytest~=8.1.1
 scikit-learn~=1.8.0
 seaborn~=0.13.2
