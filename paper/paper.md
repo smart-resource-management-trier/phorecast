@@ -13,6 +13,8 @@ authors:
     affiliation: 1
   - name: Joscha Grüger
     affiliation: "1, 2"
+  - name: Sascha Stülb
+    affiliation: 1
   - name: Maximilian Hoffmann
     affiliation: 1
   - name: Ralph Bergmann
@@ -22,74 +24,49 @@ affiliations:
     index: 1
   - name: Artificial Intelligence and Intelligent Information Systems, Trier University, 54296 Trier, Germany
     index: 2
-date: 13 April 2026
+date: 28 June 2026
 bibliography: references.bib
 ---
 
 # Summary
 
-Accurate forecasting of photovoltaic (PV) power generation is crucial for efficient energy management, grid stability, and the economic integration of renewable sources into modern power systems. **PHORECAST** is an open-source software framework for photovoltaic power forecasting with machine learning. It combines PV-specific data ingestion, configurable preprocessing, model training, and evaluation in a reusable workflow.
+Accurate forecasting of photovoltaic (PV) power generation is important for grid operation, energy management, and the integration of renewable electricity into modern energy systems. **PHORECAST** is an open-source software framework for PV power forecasting with machine learning. It combines PV and weather data handling, configurable forecasting workflows, persistent storage, and web/API access in a deployment-oriented framework.
 
-The framework supports heterogeneous inputs such as inverter telemetry, meteorological data, and file-based datasets, and provides implementations of forecasting models including LSTM, GRU, and SVR. PHORECAST follows a configuration-driven design aligned with Machine Learning Operations (MLOps) practices, enabling reproducible experiments, benchmarking, and deployment-oriented workflows.
-
-A key characteristic of PHORECAST is the separation between a reusable forecasting core (`phorecast-ml`) and optional deployment infrastructure, allowing both lightweight research usage and production-oriented operation.
+The submitted JOSS software artifact is the `phorecast` framework. It provides data ingestion and loader configuration, workflow orchestration, storage, Docker-based deployment, documentation, and the JOSS paper. The reusable forecasting functionality is separated into the independently installable `phorecast-ml` package, which provides preprocessing, dataset generation, metrics/losses, and LSTM-based forecasting functionality used by the framework. This split allows researchers to use the machine-learning core without the database and deployment stack, while retaining a full framework path for deployment-oriented PV forecasting workflows.
 
 # Statement of need
 
-Renewable energies such as photovoltaics (PV) are a key pillar of the energy transition and play a central role in the transformation towards a climate-neutral energy system. One of the greatest challenges in integrating solar power into existing energy systems is its inherent variability. PV generation depends strongly on meteorological and temporal factors: output is limited to daylight hours and is further influenced by parameters such as solar irradiance, ambient temperature, module tilt, surface soiling, and technical condition of the installation [@Iheanetu_2022].
+Photovoltaic generation is variable because it depends on meteorological conditions, daylight, site configuration, and the technical condition of the installation [@Iheanetu_2022]. This variability affects grid operators, energy suppliers, traders, prosumers, and operators of energy-intensive infrastructure. Forecasts help these actors anticipate fluctuations, schedule flexible demand, reduce balancing risk, and improve self-consumption and battery utilization [@Ahmed_2020; @Luthander_2015].
 
-This variability affects several layers of the energy market. Grid operators rely on accurate PV power forecasts to anticipate fluctuations in generation, balance supply and demand, and reduce the need for costly reserve power plants, thus supporting system stability [@Ahmed_2020]. Energy suppliers and traders use forecasts to integrate expected PV generation into bidding strategies, reduce risks in electricity markets, and optimize economic decisions [@Ahmed_2020]. Prosumer households and businesses benefit from forecasts by aligning consumption patterns with high-production periods, thereby maximizing self-consumption, reducing grid dependence, and improving battery utilization [@Luthander_2015].
+PV forecasting approaches include statistical time-series methods, physical models, machine-learning methods, and hybrid or ensemble approaches [@Sobri_2018; @Gupta_2021]. In practical research workflows, however, model development is only one part of the problem. Researchers also need repeatable handling of PV measurements and weather forecasts, consistent preprocessing and dataset construction, configurable model execution, storage of forecasts and artifacts, and a route from local experiments to deployment-oriented operation.
 
-From a methodological perspective, PV forecasting approaches can be categorized into statistical time-series methods, physical models, and hybrid approaches [@Sobri_2018]. Machine learning models such as ANN, SVM, LSTM, and GRU have shown strong performance for capturing non-linear temporal dependencies [@Iheanetu_2022].
-
-Despite existing tools, there remains a need for an open, domain-specific, and reproducible framework that integrates PV data handling, preprocessing, forecasting, and evaluation into a unified and reusable workflow. PHORECAST addresses this gap.
+PHORECAST addresses this integration layer. It is intended for installation-level or inverter-level PV forecasting workflows in which PV measurements and weather forecasts are combined to train and run machine-learning models. Its contribution is not a broad collection of forecasting algorithms, but a PV-specific framework that connects data ingestion, workflow orchestration, reusable machine-learning functionality, and application infrastructure in a reproducible open-source system.
 
 # State of the field
 
-Several established tools address parts of the PV and forecasting workflow. `pvlib python` provides a widely used foundation for modeling PV system performance with a focus on physical modeling approaches [@Anderson2023]. `pvOps` supports empirical analysis of PV field data and operational datasets [@Bonney2023]. General-purpose time-series libraries offer forecasting models and APIs but lack domain-specific integration for PV systems.
+Existing open-source software covers several important parts of the PV and forecasting workflow. `pvlib python` provides a widely used foundation for PV system performance modelling and physical PV calculations [@Anderson2023], while `pvOps` supports empirical analysis of heterogeneous PV field-operation data [@Bonney2023]. The Solar Forecast Arbiter addresses a complementary part of the workflow by providing infrastructure for repeatable evaluation of solar, irradiance, and net-load forecasts [@Hansen2019SolarForecastArbiter]. These tools are important reference points for PV research software, but they do not primarily provide a configurable machine-learning framework that combines PV/weather data handling, model execution, storage, and deployment-oriented operation.
 
-PHORECAST differs from these tools by integrating PV-specific data ingestion, preprocessing, and machine learning forecasting into a unified and reusable pipeline. A key distinction is the introduction of the standalone Python package **`phorecast-ml`**, which encapsulates the forecasting core independently of infrastructure components.
-
-This design enables users to interact with the forecasting functionality directly through Python or CLI interfaces without requiring database integration. The broader PHORECAST framework extends this core with orchestration and deployment features, making it suitable for both research and operational contexts.
+Broader energy and time-series software addresses related problems at different levels of abstraction. OpenSTEF provides open tooling for short-term energy forecasting pipelines [@OpenSTEF], while general-purpose libraries such as Darts provide broad forecasting model APIs [@Herzen2022Darts]. PHORECAST is not intended to replace these domain-general forecasting libraries. Instead, it focuses on the PV forecasting workflow around the model: data loaders, orchestration, persistence, web/API access, Docker deployment, and reusable PV-focused preprocessing and LSTM forecasting functionality. The separation between `phorecast` and `phorecast-ml` is central to this contribution because it lets the same forecasting core support lightweight research use and full framework deployments.
 
 # Software design
 
-PHORECAST is structured into four main subsystems: Data Loaders, Preprocessing, Model Layer, and Evaluation. These components form a modular pipeline that reflects the typical workflow of PV forecasting.
+PHORECAST uses a two-layer architecture. The `phorecast` repository is the full framework layer and remains the primary JOSS artifact. It contains the configurable component system for target and weather loaders, the event engine for workflow orchestration, InfluxDB and SQLite integration for time-series data and configuration metadata, the Flask web interface and HTTP API, Docker Compose deployment files, documentation, and the paper. In the documented full-framework workflow, users configure PV measurement loaders, weather loaders, and forecasting models; the framework executes these components and stores generated forecasts for inspection through the application stack.
 
-A central design decision is the separation of concerns between forecasting logic and infrastructure. The core functionality is implemented in the standalone Python package **`phorecast-ml`**, which provides:
+The `phorecast-ml` package is the reusable machine-learning core. It can be installed independently and imported without the database, web interface, or Docker deployment. Its current documented scope includes preprocessing utilities, solar-position features, time-window and dataset generation, train/test splitting, custom metrics/losses, and LSTM-based training and inference using TensorFlow/Keras.
 
-- Data ingestion from CSV/JSON and other sources  
-- Preprocessing pipelines (normalization, imputation, feature extraction)  
-- Model training and inference (LSTM, GRU, SVR)  
-- Evaluation metrics (RMSE, MAE, MAPE)  
-
-This package can be:
-- installed independently,
-- imported as a Python library,
-- executed via a command-line interface (CLI),
-
-without requiring a database or containerized environment.
-
-The full PHORECAST framework builds on top of this core and adds optional infrastructure such as Docker-based deployment, database integration, and monitoring tools. This layered design enables two usage modes:
-
-1. **Lightweight mode:** direct usage of `phorecast-ml` for research and experimentation  
-2. **Deployment mode:** full system with orchestration and infrastructure  
-
-This separation improves modularity, reusability, and reproducibility while maintaining flexibility for real-world applications.
-
-![Overview of the PHORECAST system architecture showing the four core subsystems.](Forecast_Pipeline.png)
+The design trade-off is deliberate. Keeping orchestration, storage, web/API access, and deployment in `phorecast` supports deployment-oriented PV forecasting workflows and reviewer-friendly Docker usage. Separating preprocessing and LSTM forecasting into `phorecast-ml` keeps the forecasting core reusable for lightweight experiments and directly addresses the need for installation, import, and testing without database infrastructure. This structure narrows the package boundaries while preserving a complete framework path for PV forecasting research.
 
 # Research impact statement
 
-PHORECAST provides a reusable software foundation for photovoltaic forecasting research. By separating the forecasting logic into the standalone `phorecast-ml` package, the framework enables users to apply forecasting pipelines independently of deployment infrastructure.
+PHORECAST has been used in DFKI and Trier University research contexts as a reusable baseline for PV forecasting workflows. It supports benchmarking-style experiments in which researchers compare the effect of different weather models while keeping the forecasting baseline model and workflow fixed. It is also being applied to cloud/edge continuum investigations, especially settings that combine global model training with local inference, and to the development and evaluation of multi-model ensemble approaches for PV forecasting.
 
-This modular approach addresses a common limitation in research software, where code is tightly coupled to specific environments or data systems. By enabling installation, import, and execution without database dependencies, PHORECAST improves reproducibility and portability.
+The framework is used in project contexts that connect PV forecasting to applied energy-management questions. In the context of DZW [@DFKI_DZW], PHORECAST supports research workflows on integrating PV power generation into drinking-water distribution and wastewater treatment processes. In the context of HIP-EMIL [@DFKI_HIPEMIL], it supports research workflows in predictive energy management. In the context of SOWEKI [@DFKI_SOWEKI], it supports research workflows on sector coupling between PV generation and energy demands in drinking-water infrastructure.
 
-The framework is publicly available, version-controlled, and designed for extensibility. It supports consistent experimentation and facilitates the comparison of forecasting approaches across datasets and configurations. As the modular core continues to mature, PHORECAST is positioned to support both research applications and integration into operational energy systems.
+These uses are project-specific research applications rather than evidence of broad community adoption. Their significance for JOSS is that PHORECAST provides a reusable and reproducible software layer for PV forecasting experiments, metric-based comparison of generated forecasts, ensemble development, and deployment-oriented studies where the same workflow must connect research code with operational data and application infrastructure.
 
 # AI usage disclosure
 
-Generative AI tools were used during the revision of this manuscript to support language editing and restructuring. All technical content, design decisions, and scientific claims were reviewed and validated by the authors.
+OpenAI ChatGPT and Codex were used during the revision of this work for auxiliary tasks, including repository review, documentation drafting and restructuring, manuscript editing, figure planning, proofreading for clarity and consistency, and support with small code or repository maintenance tasks where applicable. AI-assisted suggestions were reviewed, edited, tested where relevant, and validated by the authors before inclusion. All scientific ideas, software design decisions, architectural choices, project-specific claims, references, analyses, interpretations, and final manuscript wording were reviewed and approved by the authors, who retain full responsibility for the submitted software and paper.
 
 # Acknowledgements
 
