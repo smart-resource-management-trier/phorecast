@@ -54,6 +54,8 @@ PHORECAST uses a two-layer architecture. The `phorecast` repository is the full 
 
 The `phorecast-ml` package is the reusable machine-learning core. It can be installed independently and imported without the database, web interface, or Docker deployment. Its current documented scope includes preprocessing utilities, solar-position features, time-window and dataset generation, train/test splitting, custom metrics/losses, and LSTM-based training and inference using TensorFlow/Keras.
 
+![Overview of the PHORECAST architecture. The phorecast framework handles data ingestion, workflow orchestration, storage, web/API access, and Docker-based deployment, while phorecast-ml provides the reusable preprocessing and model-training core.](Forecast_architecture.png)
+
 The design trade-off is deliberate. Keeping orchestration, storage, web/API access, and deployment in `phorecast` supports deployment-oriented PV forecasting workflows and reviewer-friendly Docker usage. Separating preprocessing and LSTM forecasting into `phorecast-ml` keeps the forecasting core reusable for lightweight experiments and directly addresses the need for installation, import, and testing without database infrastructure. This structure narrows the package boundaries while preserving a complete framework path for PV forecasting research.
 
 # Research impact statement

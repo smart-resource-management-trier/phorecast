@@ -126,14 +126,20 @@ Contains unit and integration tests plus test resources.
 
 PHORECAST is organized around a full-framework layer and a reusable ML core:
 
-- `phorecast` provides orchestration, configuration, database integration, web/API access, Docker deployment, and the JOSS paper.
-- `phorecast-ml` provides reusable preprocessing, dataset generation, metrics/losses, and LSTM-based forecasting functionality.
+- `phorecast` provides data ingestion and loaders, workflow orchestration, storage, web/API access, Docker-based deployment, documentation, and the JOSS paper.
+- `phorecast-ml` provides reusable preprocessing, dataset generation, metrics/losses, and model-training/inference functionality.
 
 The full framework supports the lifecycle of PV forecasting:
 
 1. Data ingestion for PV measurements and weather forecasts.
 2. Processing, model training, and inference.
 3. Forecast storage and access through the application stack.
+
+<p align="center">
+<img src="docu/Forecast_architecture.png" alt="Overview of the PHORECAST architecture showing phorecast as the full framework and phorecast-ml as the reusable ML core" width="900"/>
+</p>
+
+<p align="center"><em>PHORECAST architecture overview: inputs enter through the phorecast framework, which handles ingestion, orchestration, storage, web/API access, and Docker-based deployment; phorecast-ml provides the reusable preprocessing and forecasting core.</em></p>
 
 Evaluation and monitoring components are part of the broader framework direction, but should only be treated as implemented where the repository provides working code and documentation.
 
@@ -154,10 +160,6 @@ The Flask application provides a web interface for configuring components and in
 ### Event Engine
 
 The EventEngine orchestrates the component lifecycle. It runs target loaders and weather loaders, then executes configured models. Components are created from configuration stored in SQLite, while ingested and generated time-series data is stored in InfluxDB.
-
-<p align="center">
-<img src="docu/Simplified_Structure.png" alt="Simplified PHORECAST structure" width="500"/>
-</p>
 
 ### Database Concept
 
